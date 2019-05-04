@@ -51,17 +51,6 @@ class BitcoinFS(LoggingMixIn, Operations):
         st = self.files[path]
         return st
     
-    def getxattr(self, path, name, position=0):
-        attrs = self.files[path].get('attrs', {})
-        try:
-            return attrs[name]
-        except KeyError:
-            return ''       # Should return ENOATTR
-    
-    def listxattr(self, path):
-        attrs = self.files[path].get('attrs', {})
-        return attrs.keys()
-    
     def mkdir(self, path, mode):
         self.files[path] = dict(st_mode=(S_IFDIR | mode), st_nlink=2,
                 st_size=0, st_ctime=time(), st_mtime=time(), st_atime=time())
@@ -93,11 +82,6 @@ class BitcoinFS(LoggingMixIn, Operations):
     def rmdir(self, path):
         self.files.pop(path)
         self.files['/']['st_nlink'] -= 1
-    
-    def setxattr(self, path, name, value, options, position=0):
-        # Ignore options
-        attrs = self.files[path].setdefault('attrs', {})
-        attrs[name] = value
     
     def statfs(self, path):
         return dict(f_bsize=512, f_blocks=4096, f_bavail=2048)
@@ -131,7 +115,6 @@ class BitcoinFS(LoggingMixIn, Operations):
 def parseconf(fname):
     lines = [ item.strip() for item in open(fname).readlines() if not "#" in item ]
     res = {}
-    print(lines)
     for line in lines:
         tk = line.split(" ")
         if len(tk) < 2:
@@ -162,7 +145,6 @@ if __name__ == "__main__":
         exit()
     try:
        data = parseconf(conf)
-       print(data)
        logging.getLogger().setLevel(logging.DEBUG)
        fuse = FUSE(BitcoinFS(data), argv[1], foreground=True)
     except:
