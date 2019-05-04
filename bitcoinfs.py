@@ -130,13 +130,18 @@ def parseconf(fname):
 if __name__ == "__main__":
     conf1 = "./bitcoinfs.conf"
     conf2 = "~/.bitcoinfs.conf"
-    if len(argv) != 2:
-        print('usage: %s <mountpoint>' % argv[0])
+    if len(argv) < 2:
+        print('usage: %s <mountpoint> <filelist txid>' % argv[0])
         exit(1)
     if argv[1] in ["-h","--help"]:
-        print('usage: %s <mountpoint>\nNeeds the bitcoinfs.conf in the same folder as executable or as ~/.bitcoinfs.conf in home folder\n' % (argv[0]))
-    
-    if os.path.isfile(conf1):
+        print('usage: %s <mountpoint> <filelist txid>\nNeeds the bitcoinfs.conf in the same folder as executable or as ~/.bitcoinfs.conf in home folder, alternatively we can fetch the file list directly from the blockchain using the txid\n' % (argv[0]))
+    if len(argv) == 3:
+      confd = txid2boptreturn(argv[2])
+      f = open("/tmp/bitcoinfs.conf","wb")
+      f.write(confd)
+      f.close()
+      conf = "/tmp/bitcoinfs.conf"
+    elif os.path.isfile(conf1):
         conf=conf1
     elif os.path.isfile(conf2):
         conf=conf2
