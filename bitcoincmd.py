@@ -51,7 +51,7 @@ def btcGenOPRETURN(data,txfee=0.0005):
   change = str(float(btcGetBalance() - txfee*btc2sat)/btc2sat)
   addr = btcNewAddress() 
   tx = call(["bitcoin-tx","-create","in=%s:%s"%(txid,vout),
-                                    "outdata=%s" % (str(str2hex(data))),
+                                    "outdata=%s" % (str2hex(data).decode("utf-8")),
                                     "outaddr=%s:%s" %(change,addr.split(":")[1])])
   return tx
 
