@@ -5,13 +5,15 @@ import subprocess as sb
 import binascii
 import sys
 import json
+
+def call(cmd):
+ return  sb.check_output(cmd,shell=False).decode("utf-8").strip()
+
 def txid2boptreturn(txid):
   ''' return OP_RETURN in bytes given a txid'''
-  literal1 = 'bitcoin-cli gettransaction ' + str(txid)
-  bsv1 = subprocess.check_output(literal1,shell=True,stderr=subprocess.STDOUT,).decode("utf-8").strip('\x00')
+  bsv1 = call(["bitcoin-cli","gettransaction",txid])
   jbsv1 = json.loads(bsv1)
-  literal2 = 'bitcoin-cli decoderawtransaction ' + jbsv1['hex']
-  bsv2 = subprocess.check_output(literal2,shell=True,stderr=subprocess.STDOUT,).decode("utf-8").strip('\x00')
+  bsv2 = call(["bitcoin-cli","decoderawtransaction",jbsv1['hex']])
   jbsv2= json.loads(bsv2)
   opreturnhex=jbsv2['vout'][0]['scriptPubKey']['asm'].split('OP_RETURN')[1]
   return bytes.fromhex(opreturnhex)
@@ -27,8 +29,6 @@ def hex2data(data):
 
 btc2sat = 100000000
 
-def call(cmd):
- return  sb.check_output(cmd,shell=False).decode("utf-8").strip()
 
 def btcGetUnspent():
   utxo = json.loads(call(["bitcoin-cli","listunspent"]))
