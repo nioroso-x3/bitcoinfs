@@ -142,7 +142,7 @@ def parseconf(fname):
 if __name__ == "__main__":
     conf1 = "./bitcoinfs.conf"
     conf2 = "~/.bitcoinfs.conf"
-    conf3 = getrndf()
+    conf3 = genrndf()
     if len(argv) < 2:
         print('usage: %s <mountpoint> <filelist txid>' % argv[0])
         exit(1)
