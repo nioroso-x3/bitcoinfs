@@ -119,6 +119,7 @@ def btcSendTx(signed):
     return txid
   
 if __name__ == "__main__":
+    pass
     #test functions
     #txid,vout = btcGetUnspent()
     #addr = btcNewAddress()
