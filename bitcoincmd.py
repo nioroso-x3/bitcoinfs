@@ -7,7 +7,7 @@ import subprocess as sb
 import binascii
 import sys
 import json
-
+import requests
 def call(cmd):
  return  sb.check_output(cmd,shell=False).decode("utf-8").strip()
 
@@ -21,7 +21,7 @@ def txid2boptreturn(txid,server="local"):
     opreturnhex=jbsv2['vout'][0]['scriptPubKey']['asm'].split('OP_RETURN')[1]
     return bytes.fromhex(opreturnhex)
   else:
-    pass
+    
     
 
 def str2hex(data):

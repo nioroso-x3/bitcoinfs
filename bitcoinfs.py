@@ -16,11 +16,17 @@ import traceback
 import subprocess as sb
 import binascii
 import json
+import uuid
+
+def genrndf():
+  return "/tmp/"+str(uuid.uuid4())
+
 
 class BitcoinFS(LoggingMixIn, Operations):
     """In memory filesystem. Supports only one level of files."""
     
     def __init__(self,data):
+        self.bsvtx = data
         self.files = {}
         self.data = defaultdict(bytearray)
         self.fd = 0
@@ -136,6 +142,7 @@ def parseconf(fname):
 if __name__ == "__main__":
     conf1 = "./bitcoinfs.conf"
     conf2 = "~/.bitcoinfs.conf"
+    conf3 = getrndf()
     if len(argv) < 2:
         print('usage: %s <mountpoint> <filelist txid>' % argv[0])
         exit(1)
@@ -143,10 +150,10 @@ if __name__ == "__main__":
         print('usage: %s <mountpoint> <filelist txid>\nNeeds the bitcoinfs.conf in the same folder as executable or as ~/.bitcoinfs.conf in home folder, alternatively we can fetch the file list directly from the blockchain using the txid\n' % (argv[0]))
     if len(argv) == 3:
       confd = txid2boptreturn(argv[2])
-      f = open("/tmp/bitcoinfs.conf","wb")
+      f = open(conf3,"wb")
       f.write(confd)
       f.close()
-      conf = "/tmp/bitcoinfs.conf"
+      conf = conf3
     elif os.path.isfile(conf1):
         conf=conf1
     elif os.path.isfile(conf2):
