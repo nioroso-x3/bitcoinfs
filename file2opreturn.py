@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Generates curl commands to send files by chunks
-For now you have to rerun this script each time you upload a chunk and run the command for the chunk you want to upload.
+Generates curl commands to send files by 48kb chunks
+Needs user:pass, file and chunk number as argument:
 """
 import subprocess as sb
 import binascii
@@ -13,27 +13,45 @@ import uuid
 def gentmpfname():
   return "/tmp/"+str(uuid.uuid4())
 
-def chunker(fname):
+def GetChunks(fname):
     chunks = []
     chunkS = 48*1024
-    data = open(fname,"rb").read()
-    l = len(data)
+    data = open(fname,"rb")
+    data.seek(0,2)
+    l = data.tell()
+    data.seek(0,0)
     chunkN = int(l / chunkS)
     r = l - chunkN*chunkS
     for i in range(chunkN):
-        begin = i*chunkS
-        end = i+1*chunkS
-        chunk = data[begin:end]
+        chunk = data.read(chunkS)
         tx = btcGenOPRETURN(chunk)
         chunks.append(tx)
-    begin=chunkN*chunkS
-    end=begin+r
-    chunk = data[begin:end]
-    chunktx = btcGenOPRETURN(bytes(chunk))
+    chunk = data.read(r)
     tx = btcGenOPRETURN(chunk)
     chunks.append(tx)
     return chunks
 
+def GetChunk(fname,N):
+    chunkS = 48*1024
+    data = open(fname,"rb")
+    data.seek(0,2)
+    l = data.tell()
+    data.seek(0,0)
+    chunkN = int(l / chunkS)
+    r = l - chunkN*chunkS
+#    print(N,chunkN,l,chunkS,r)
+    if N < chunkN:
+        A = N*chunkS
+        data.seek(A,0)
+        chunk = data.read(chunkS)
+        tx = btcGenOPRETURN(chunk) 
+        return tx,chunkN,r
+    elif N >= chunkN:
+        A=chunkN*chunkS
+        data.seek(A,0)
+        chunk = data.read(r)
+        tx = btcGenOPRETURN(chunk)
+        return tx,chunkN,r
 
 def signrawRPC(user,data):
     fn = gentmpfname()
@@ -57,12 +75,25 @@ def sendrawRPC(user,data):
     #out = json.loads(sb.check_output(cmd,shell=True).decode("utf-8"))
     #return out['result']['hex']
 
+
 if __name__ == "__main__":
-    chunks = chunker(sys.argv[2])
-    cmds = []
-    for chunk in chunks:
+#    if len(sys.argv) == 3:
+#        chunks = GetChunks(sys.argv[2])
+#        cmds = []
+#        for chunk in chunks:
+#            signed = signrawRPC(sys.argv[1],chunk)
+#            rdysend = sendrawRPC(sys.argv[1],signed)
+#            cmds.append(rdysend)
+#        for cmd in cmds:
+#            print(cmd)
+    if len(sys.argv) == 4:
+        n = int(sys.argv[3])-1
+        assert(n>=0)
+        chunk,l,r = GetChunk(sys.argv[2],n)
         signed = signrawRPC(sys.argv[1],chunk)
         rdysend = sendrawRPC(sys.argv[1],signed)
-        cmds.append(rdysend)
-    for cmd in cmds:
-        print(cmd)
+        if r > 0:
+            l+=1
+        print(n+1,l,rdysend)
+    else:
+        print("Wrong number of arguments\n",sys.argv)

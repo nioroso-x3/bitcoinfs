@@ -8,21 +8,29 @@ import binascii
 import sys
 import json
 import requests
-def call(cmd):
- return  sb.check_output(cmd,shell=False).decode("utf-8").strip()
 
-def txid2boptreturn(txid,server="local"):
-  if server == "local":
+txidAPI="https://api.blockchair.com/bitcoin-sv/raw/transaction/"
+
+def call(cmd):
+  return  sb.check_output(cmd,shell=False).decode("utf-8").strip()
+
+def txid2boptreturn(txid):
+  try:
     ''' return OP_RETURN in bytes given a txid'''
     bsv1 = call(["bitcoin-cli","gettransaction",txid])
     jbsv1 = json.loads(bsv1)
     bsv2 = call(["bitcoin-cli","decoderawtransaction",jbsv1['hex']])
     jbsv2= json.loads(bsv2)
     opreturnhex=jbsv2['vout'][0]['scriptPubKey']['asm'].split('OP_RETURN')[1]
+    print(len(opreturnhex))
     return bytes.fromhex(opreturnhex)
-  else:
-    pass
-    
+  except:
+    #expects txid api
+    print("No bitcoin-cli available, falling back to http api")
+    raw = requests.get(txidAPI+txid)
+    js = raw.json()
+    opreturnhex = js['data'][txid]['decoded_raw_transaction']['vout'][0]['scriptPubKey']['asm'].split('OP_RETURN')[1]
+    return bytes.fromhex(opreturnhex)
 
 def str2hex(data):
   if type(data) == str:

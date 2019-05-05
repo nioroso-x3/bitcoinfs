@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
 BitcoinFS main script
+Based on the memory filesystem example from fusepy.
+Eventually should be rewritten in C.
 """
 
 from fusepy import FUSE, Operations, LoggingMixIn
@@ -80,12 +82,6 @@ class BitcoinFS(LoggingMixIn, Operations):
     def readlink(self, path):
         return self.data[path].decode('utf-8')
     
-    def removexattr(self, path, name):
-        attrs = self.files[path].get('attrs', {})
-        try:
-            del attrs[name]
-        except KeyError:
-            pass        # Should return ENOATTR
     
     def rename(self, old, new):
         self.files[new] = self.files.pop(old)
@@ -147,7 +143,7 @@ if __name__ == "__main__":
         print('usage: %s <mountpoint> <filelist txid>' % argv[0])
         exit(1)
     if argv[1] in ["-h","--help"]:
-        print('usage: %s <mountpoint> <filelist txid>\nNeeds the bitcoinfs.conf in the same folder as executable or as ~/.bitcoinfs.conf in home folder, alternatively we can fetch the file list directly from the blockchain using the txid\n' % (argv[0]))
+        print('usage: %s <mountpoint> <filelist txid>\nNeeds the bitcoinfs.conf in the same folder as executable or as ~/.bitcoinfs.conf in home folder, alternatively we can fetch the file list directly from the blockchain using the txid as a third argument.\n' % (argv[0]))
     if len(argv) == 3:
       confd = txid2boptreturn(argv[2])
       f = open(conf3,"wb")
@@ -167,5 +163,3 @@ if __name__ == "__main__":
        fuse = FUSE(BitcoinFS(data), argv[1], foreground=True)
     except:
        traceback.print_exc() 
-
-
