@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+BitcoinFS main script
+"""
+
 from fusepy import FUSE, Operations, LoggingMixIn
 from collections import defaultdict
 from errno import ENOENT

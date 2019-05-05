@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-
+"""
+Helper functions that interact with bitcoin-cli
+"""
 
 import subprocess as sb
 import binascii

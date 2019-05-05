@@ -2,7 +2,7 @@
 """
 Upload file to the Bitcoin network.
 Requires configured bitcoin-cli access to a trusted local node with wallet access and some bitcoins to pay for the upload.
-txfee is configured as 0.0001 BTC
+txfee is configured as 0.0005 BTC
 Usage:
 ./uploader.py filename
 """
