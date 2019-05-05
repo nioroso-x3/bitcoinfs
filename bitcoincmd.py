@@ -11,14 +11,18 @@ import json
 def call(cmd):
  return  sb.check_output(cmd,shell=False).decode("utf-8").strip()
 
-def txid2boptreturn(txid):
-  ''' return OP_RETURN in bytes given a txid'''
-  bsv1 = call(["bitcoin-cli","gettransaction",txid])
-  jbsv1 = json.loads(bsv1)
-  bsv2 = call(["bitcoin-cli","decoderawtransaction",jbsv1['hex']])
-  jbsv2= json.loads(bsv2)
-  opreturnhex=jbsv2['vout'][0]['scriptPubKey']['asm'].split('OP_RETURN')[1]
-  return bytes.fromhex(opreturnhex)
+def txid2boptreturn(txid,server="local"):
+  if server == "local":
+    ''' return OP_RETURN in bytes given a txid'''
+    bsv1 = call(["bitcoin-cli","gettransaction",txid])
+    jbsv1 = json.loads(bsv1)
+    bsv2 = call(["bitcoin-cli","decoderawtransaction",jbsv1['hex']])
+    jbsv2= json.loads(bsv2)
+    opreturnhex=jbsv2['vout'][0]['scriptPubKey']['asm'].split('OP_RETURN')[1]
+    return bytes.fromhex(opreturnhex)
+  else:
+    pass
+    
 
 def str2hex(data):
   if type(data) == str:

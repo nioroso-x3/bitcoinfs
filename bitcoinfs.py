@@ -16,6 +16,7 @@ import traceback
 import subprocess as sb
 import binascii
 import json
+
 class BitcoinFS(LoggingMixIn, Operations):
     """In memory filesystem. Supports only one level of files."""
     
@@ -108,12 +109,13 @@ class BitcoinFS(LoggingMixIn, Operations):
         atime, mtime = times if times else (now, now)
         self.files[path]['st_atime'] = atime
         self.files[path]['st_mtime'] = mtime
-    
-    def write(self, path, data, offset, fh):
-        del self.data[path][offset:]
-        self.data[path].extend(data)
-        self.files[path]['st_size'] = len(self.data[path])
-        return len(data)
+
+#read only for now    
+#    def write(self, path, data, offset, fh):
+#        del self.data[path][offset:]
+#        self.data[path].extend(data)
+#        self.files[path]['st_size'] = len(self.data[path])
+#        return len(data)
 
 
 def parseconf(fname):
