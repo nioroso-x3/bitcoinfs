@@ -5,22 +5,21 @@ Requires configured bitcoin-cli access to a trusted local node with wallet acces
 txfee is configured as 0.0005 BTC
 Max file size is 8kb
 Usage:
-./uploader.py filename
+./tinyuploader.py filename >> bitcoinfs.conf
 """
 from bitcoincmd import *
 import os
-
-
-
 if __name__ == "__main__":
    if len(sys.argv) != 2:
       print("Wrong number of arguments")
       exit()
    try:
-     f = open(sys.argv[1],"rb").read()
+       f = open(sys.argv[1],"rb").read()
+       if len(f) > 8*1024:
+       print("File too big! Use file2opreturn.py or another service.")
    except:
-     print("Error opening file")
-     exit()
+       print("Error opening file")
+       exit()
    tx = btcGenOPRETURN(f)
    signed = btcSignTx(tx)
    txid = btcSendTx(signed)

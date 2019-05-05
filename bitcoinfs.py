@@ -5,7 +5,11 @@ Based on the memory filesystem example from fusepy.
 Eventually should be rewritten in C.
 """
 
-from fusepy import FUSE, Operations, LoggingMixIn
+try:
+    from fusepy import FUSE, Operations, LoggingMixIn
+except:
+    from fuse import FUSE, Operations, LoggingMixIn
+
 from collections import defaultdict
 from errno import ENOENT
 from stat import S_IFDIR, S_IFLNK, S_IFREG
@@ -19,10 +23,6 @@ import subprocess as sb
 import binascii
 import json
 import uuid
-
-def genrndf():
-  return "/tmp/"+str(uuid.uuid4())
-
 
 class BitcoinFS(LoggingMixIn, Operations):
     """In memory filesystem. Supports only one level of files."""
@@ -138,7 +138,7 @@ def parseconf(fname):
 if __name__ == "__main__":
     conf1 = "./bitcoinfs.conf"
     conf2 = "~/.bitcoinfs.conf"
-    conf3 = genrndf()
+    conf3 = gentmpfname()
     if len(argv) < 2:
         print('usage: %s <mountpoint> <filelist txid>' % argv[0])
         exit(1)
