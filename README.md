@@ -13,7 +13,7 @@ bitcoin-cli is required to use the file upload scripts
 
 # Installation
 
-Using pip and local python enviroment. Recomended
+* Using pip and local python enviroment. Recomended
 ```
 pip install virtualenv
 ```
@@ -30,17 +30,17 @@ pip3 install fusepy
 pip3 install requests
 ```
 
-In Ubuntu Linux 18.04:
+* In Ubuntu Linux 18.04:
 
 ```
 apt-get install python3-fusepy python3-requests
 ```
 
-In OSX:
+* In OSX:
 
 Not tested due to no available machine, but it should work with MacFUSE installed through your favorite package manager and the fusepy and requests libraries
 
-In Windows:
+* In Windows:
 
 Not supported.
 
@@ -61,8 +61,9 @@ To mount from BitcoinsSV trasnsaccion ID in mnt existing folder
 
 * 2 Mounting Riemann Paper and four strand DNA olygo assembler sequence, Pubmed ID [30285239](https://www.ncbi.nlm.nih.gov/pubmed/30285239)
 
+```
 ./bitcoinfs.py test/ 3fa7bea2b9d2ab16d7ecea074e9b2277272b9e707d42f4d52d69b9f5272025c6
-
+```
 # ARTEFACTS
 
 * Mount Human Transcriptome
