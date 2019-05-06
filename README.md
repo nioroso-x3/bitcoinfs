@@ -5,7 +5,7 @@ FUSE interface for blockchain file storage
 
 <!--
 mount a local folder with files from bitcoinSV blockchain 
-<!--
+-->
 
 
 Requires python3 with the fusepy and requests libraries.
