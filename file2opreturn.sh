@@ -31,7 +31,7 @@ do
         elif echo $out | grep -q 'Fail wait for new utxo' 
         then
             #echo to stderr
-            echo "Waiting for new utxo, sleeping 240 seconds" 1 >%2
+            echo "Waiting for new utxo, sleeping 240 seconds" 1>&2
             sleep 240
         else
             echo "Other error ocurred"
