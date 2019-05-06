@@ -13,12 +13,12 @@ bitcoin-cli is required to use the file upload scripts
 
 # Installation
 
-Using pip and local python enviroment Recomended
+Using pip and local python enviroment. Recomended
 ```
 pip install virtualenv
 ```
 ```
-virtualenv -p python3.7 envname
+virtualenv -p python3 envname
 ```
 ```
 source envname/bin/activate
@@ -27,7 +27,7 @@ source envname/bin/activate
 pip3 install fusepy
 ```
 ```
-pip3 install request
+pip3 install requests
 ```
 
 In Ubuntu Linux 18.04:
@@ -37,9 +37,11 @@ apt-get install python3-fusepy python3-requests
 ```
 
 In OSX:
+
 Not tested due to no available machine, but it should work with MacFUSE installed through your favorite package manager and the fusepy and requests libraries
 
 In Windows:
+
 Not supported.
 
 #Usage
@@ -49,7 +51,7 @@ To mount from BitcoinsSV trasnsaccion ID in mnt existing folder
 ./bitcoinfs.py mnt/ txid
 ```
 
-#Use Cases 
+# Use Cases 
 
 * 1 Loading bitcoinfs.conf from the blockchain
 
@@ -61,6 +63,8 @@ To mount from BitcoinsSV trasnsaccion ID in mnt existing folder
 
 ./bitcoinfs.py test/ 3fa7bea2b9d2ab16d7ecea074e9b2277272b9e707d42f4d52d69b9f5272025c6
 
-#ARTEFACT
+# ARTEFACTS
 
-* Mount Human Proteome
+* Mount Human Transcriptome
+
+* Mount Human Proteome [UP000005640](https://www.uniprot.org/proteomes/UP000005640)
