@@ -44,12 +44,14 @@ Not tested due to no available machine, but it should work with MacFUSE installe
 
 Not supported.
 
-#Usage
+# Usage
 To mount from BitcoinsSV trasnsaccion ID in mnt existing folder
 
 ```
 ./bitcoinfs.py mnt/ txid
 ```
+
+As long bitcoinfs.py is runnig files can be accessed in mnt/.
 
 # Use Cases 
 
