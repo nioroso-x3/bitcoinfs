@@ -1,11 +1,11 @@
 # bitcoinfs
-<!--
+
+
 FUSE interface for blockchain file storage
 
 
-
 mount a local folder with files from bitcoinSV blockchain 
--->
+
 
 
 Requires python3 with the fusepy and requests libraries.
@@ -16,9 +16,21 @@ bitcoin-cli is required to use the file upload scripts
 Using pip and local python enviroment Recomended
 ```
 pip install virtualenv
+```
+
+```
 virtualenv -p python3.7 envname
+```
+
+```
 source envname/bin/activate
+```
+
+```
 pip3 install fusepy
+```
+
+```
 pip3 install request
 ```
 In Ubuntu Linux 18.04:
