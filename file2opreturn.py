@@ -65,11 +65,14 @@ if __name__ == "__main__":
     if len(sys.argv) == 4:
         n = int(sys.argv[3])-1
         assert(n>=0)
-        chunk,l,r = GetChunk(sys.argv[2],n)
-        signed = btcSignRaw_RPC(sys.argv[1],chunk)
-        rdysend = btcSendRaw_RPC(sys.argv[1],signed)
-        if r > 0:
-            l+=1
-        print(n+1,l,sys.argv[2],rdysend)
+        try:
+            chunk,l,r = GetChunk(sys.argv[2],n)
+            signed = btcSignRaw_RPC(sys.argv[1],chunk)
+            rdysend = btcSendRaw_RPC(sys.argv[1],signed)
+            if r > 0:
+                l+=1
+            print(n+1,l,sys.argv[2],rdysend)
+        except noutxo:
+            print("Wait for new utxo")
     else:
         print("Wrong number of arguments <user:pass> <file> <chunk N>\n",sys.argv)

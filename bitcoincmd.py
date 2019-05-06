@@ -9,6 +9,18 @@ import sys
 import json
 import requests
 import uuid
+
+
+
+class Error(Exception):
+   """Base class for other exceptions"""
+   pass
+
+class noutxo(Error):
+   """Raised when getting a utxo fails"""
+   pass
+
+
 txidAPI="https://api.blockchair.com/bitcoin-sv/raw/transaction/"
 
 def gentmpfname():
@@ -48,13 +60,11 @@ btc2sat = 100000000
 
 def btcGetUnspent():
     utxo = sorted(json.loads(call(["bitcoin-cli","listunspent"])), key=lambda x: -int(x['vout']))
-    
-    try:
-        utxo_txid= utxo[0]["txid"]
-        utxo_vout= utxo[0]["vout"]
-        value = int(float(utxo[0]["amount"])*btc2sat)
-    except:
-        print("No spendable utxos.")
+    if len(utxo) == 0:
+        raise noutxo
+    utxo_txid= utxo[0]["txid"]
+    utxo_vout= utxo[0]["vout"]
+    value = int(float(utxo[0]["amount"])*btc2sat)
     return utxo_txid,utxo_vout,value
 def btcNewAddress():
     addr = call(["bitcoin-cli","getrawchangeaddress"])
