@@ -35,6 +35,7 @@ class BitcoinFS(LoggingMixIn, Operations):
         now = time()
         self.files['/'] = dict(st_mode=(S_IFDIR | 0o755), st_ctime=now,
             st_mtime=now, st_atime=now, st_nlink=2)
+        print("Started loading %s files" % (str(len(self.bsvtx)))
         for fname in data:
             chunks = []
             for txid in data[fname]:
@@ -42,6 +43,7 @@ class BitcoinFS(LoggingMixIn, Operations):
             chunks = b''.join(chunks)
             self.files["/"+fname] = dict(st_mode=(S_IFREG | 0o600), st_nlink=1,st_size=len(chunks), st_ctime=time(), st_mtime=time(), st_atime=time())
             self.data["/"+fname] = bytearray(chunks)
+        print("Finished loading files")
 
 
     def chmod(self, path, mode): 
