@@ -47,24 +47,22 @@ btc2sat = 100000000
 
 
 def btcGetUnspent():
-    utxo = json.loads(call(["bitcoin-cli","listunspent"]))
+    utxo = sorted(json.loads(call(["bitcoin-cli","listunspent"])), key=lambda x: -int(x['vout']))
+    
     try:
         utxo_txid= utxo[0]["txid"]
         utxo_vout= utxo[0]["vout"]
+        value = int(float(utxo[0]["amount"])*btc2sat)
     except:
         print("No spendable utxos.")
-    return utxo_txid,utxo_vout
+    return utxo_txid,utxo_vout,value
 def btcNewAddress():
     addr = call(["bitcoin-cli","getrawchangeaddress"])
     return addr
-def btcGetBalance():
-    #in satoshis
-    balance = call(["bitcoin-cli","getbalance"])
-    return int(float(balance)*btc2sat)
   
 def btcGenOPRETURN(data,txfee=0.0005):
-    txid,vout = btcGetUnspent()
-    change = str(float(btcGetBalance() - txfee*btc2sat)/btc2sat)
+    txid,vout,value = btcGetUnspent()
+    change = str(float(value - txfee*btc2sat)/btc2sat)
     addr = btcNewAddress() 
     tx = call(["bitcoin-tx","-create","in=%s:%s"%(txid,vout),
                                     "outdata=%s" % (str2hex(data).decode("utf-8")),
@@ -73,8 +71,8 @@ def btcGenOPRETURN(data,txfee=0.0005):
 
 #def btcGenOPRETURN_RPC(user,data,txfee=0.0005):
 #    fn = gentmpfname()
-#    txid,vout = btcGetUnspent()
-#    change = str(float(btcGetBalance() - txfee*btc2sat)/btc2sat)
+#    txid,vout,value = btcGetUnspent()
+#    change = str(float(value - txfee*btc2sat)/btc2sat)
 #    addr = btcNewAddress()    
 #    js = u'{"jsonrpc": "1.0", "id":"curltest", "method": "createrawtransaction", "params": ["[{\"txid\":\"%s\",\"vout\":%s}]", "{\"data\":\"%s\"}", "{\"%s\":%s}"]}' % (txid,vout,str2hex(data).decode("utf-8"),addr,change)
 #    tmpf = open(fn,"wb")
@@ -105,9 +103,8 @@ def btcSendRaw_RPC(user,data):
     tmpf.close()
     cnt = "'content-type: text/plain;'"
     cmd = " ".join(["curl","-s","--user",user,"--data-binary",'"@%s"'%(fn),"-H",cnt,"http://127.0.0.1:8332/"])
-    return cmd
-    #out = json.loads(sb.check_output(cmd,shell=True).decode("utf-8"))
-    #return out['result']['hex']
+    out = json.loads(sb.check_output(cmd,shell=True).decode("utf-8"))
+    return out['result']
 
 def btcSignTx(tx):
     signed = call(["bitcoin-cli", "signrawtransaction",tx])
