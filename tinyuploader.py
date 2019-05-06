@@ -3,7 +3,7 @@
 Upload file to the Bitcoin network.
 Requires configured bitcoin-cli access to a trusted local node with wallet access and some bitcoins to pay for the upload.
 txfee is configured as 0.0005 BTC
-Max file size is 8kb
+Max file size is 16kb
 Usage:
 ./tinyuploader.py filename >> bitcoinfs.conf
 """
@@ -15,8 +15,8 @@ if __name__ == "__main__":
       exit()
    try:
        f = open(sys.argv[1],"rb").read()
-       if len(f) > 8*1024:
-       print("File too big! Use file2opreturn.py or another service.")
+       if len(f) > 16*1024:
+           print("File too big! Use file2opreturn.py or another service.")
    except:
        print("Error opening file")
        exit()

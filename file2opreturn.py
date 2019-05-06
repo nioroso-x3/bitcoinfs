@@ -70,6 +70,6 @@ if __name__ == "__main__":
         rdysend = btcSendRaw_RPC(sys.argv[1],signed)
         if r > 0:
             l+=1
-        print(n+1,l,rdysend)
+        print(n+1,l,sys.argv[2],rdysend)
     else:
-        print("Wrong number of arguments\n",sys.argv)
+        print("Wrong number of arguments <user:pass> <file> <chunk N>\n",sys.argv)
