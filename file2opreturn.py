@@ -74,5 +74,7 @@ if __name__ == "__main__":
             print(n+1,l,sys.argv[2],rdysend)
         except noutxo:
             print("Wait for new utxo")
+        except:
+            print("Other error ocurred")
     else:
         print("Wrong number of arguments <user:pass> <file> <chunk N>\n",sys.argv)
