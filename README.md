@@ -17,22 +17,19 @@ Using pip and local python enviroment Recomended
 ```
 pip install virtualenv
 ```
-
 ```
 virtualenv -p python3.7 envname
 ```
-
 ```
 source envname/bin/activate
 ```
-
 ```
 pip3 install fusepy
 ```
-
 ```
 pip3 install request
 ```
+
 In Ubuntu Linux 18.04:
 
 ```
@@ -46,7 +43,7 @@ In Windows:
 Not supported.
 
 #Usage
-mounting from BitcoinsSV trasnsaccion ID in mnt folder
+To mount from BitcoinsSV trasnsaccion ID in mnt existing folder
 
 ```
 ./bitcoinfs.py mnt/ txid
@@ -63,3 +60,7 @@ mounting from BitcoinsSV trasnsaccion ID in mnt folder
 * 2 Mounting Riemann Paper and four strand DNA olygo assembler sequence, Pubmed ID [30285239](https://www.ncbi.nlm.nih.gov/pubmed/30285239)
 
 ./bitcoinfs.py test/ 3fa7bea2b9d2ab16d7ecea074e9b2277272b9e707d42f4d52d69b9f5272025c6
+
+#ARTEFACT
+
+* Mount Human Proteome
