@@ -35,7 +35,7 @@ class BitcoinFS(LoggingMixIn, Operations):
         now = time()
         self.files['/'] = dict(st_mode=(S_IFDIR | 0o755), st_ctime=now,
             st_mtime=now, st_atime=now, st_nlink=2)
-        print("Started loading %s files" % (str(len(self.bsvtx)))
+        print("Started loading %s files" % (str(len(self.bsvtx))))
         for fname in data:
             chunks = []
             for txid in data[fname]:
