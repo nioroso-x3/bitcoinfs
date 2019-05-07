@@ -4,7 +4,7 @@
 FUSE interface for blockchain file storage
 
 
-mount a local folder with files from bitcoinSV blockchain 
+mount a local folder with files from public bitcoinSV blockchain. Not User or password required 
 
 
 
@@ -68,6 +68,14 @@ As long bitcoinfs.py is runnig files can be accessed in mnt/.
 ```
 # ARTEFACTS
 
-* Mount Human Transcriptome
+
 
 * Mount Human Proteome [UP000005640](https://www.uniprot.org/proteomes/UP000005640)
+One protein product by gene (not including protein isoforms) 
+
+
+```
+./bitcoinfs.py proteome/ 6081be231d65ec6323a74f2a876dc6e5007c1d3360d15570f49b9c5cafc9f0b7
+```
+
+
